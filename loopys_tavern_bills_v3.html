@@ -1,0 +1,233 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #EDE0C4; color: #2a2a2a; min-height: 100vh; }
+  #app { max-width: 480px; margin: 0 auto; padding: 0 0 40px; }
+
+  .header { text-align: center; padding: 20px 20px 14px; background: #1a1a1a; cursor: pointer; transition: background 0.15s; position: relative; }
+  .header:hover { background: #2e2e2e; }
+  .logo-big { font-size: 38px; font-weight: 900; color: #EDE0C4; font-family: Georgia, serif; letter-spacing: -1px; line-height: 1; }
+  .logo-stars { color: #EDE0C4; font-size: 11px; letter-spacing: 6px; margin-top: 2px; }
+  .home-hint { font-size: 10px; color: #6a5a3a; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+
+  .lang-bar { background: #111; display: flex; justify-content: flex-end; align-items: center; padding: 6px 14px; gap: 6px; border-bottom: 1px solid #333; }
+  .lang-btn { background: none; border: 1px solid #4a4a3a; color: #9a8a6a; font-size: 12px; font-family: Georgia, serif; letter-spacing: 1px; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+  .lang-btn:hover { border-color: #EDE0C4; color: #EDE0C4; }
+  .lang-btn.active { background: #EDE0C4; color: #1a1a1a; border-color: #EDE0C4; font-weight: bold; }
+
+  .section-title { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #7a6a4a; text-align: center; padding: 20px 20px 8px; font-family: Georgia, serif; }
+
+  .region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; }
+  .region-btn { background: #1a1a1a; color: #EDE0C4; border: none; border-radius: 10px; padding: 20px 12px; cursor: pointer; text-align: center; transition: background 0.15s; }
+  .region-btn:hover { background: #333; }
+  .region-btn .r-icon { font-size: 26px; display: block; margin-bottom: 6px; }
+  .region-btn .r-label { font-size: 14px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-family: Georgia, serif; }
+  .region-btn .r-count { font-size: 11px; color: #9a8a6a; margin-top: 3px; }
+
+  .back-btn { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #7a6a4a; font-size: 14px; padding: 16px 20px 8px; cursor: pointer; font-family: Georgia, serif; letter-spacing: 1px; }
+  .back-btn:hover { color: #2a2a2a; }
+  .back-arrow { font-size: 20px; line-height: 1; }
+
+  .region-header { text-align: center; padding: 4px 20px 16px; border-bottom: 1px solid #c8b880; margin: 0 16px 8px; }
+  .region-header h2 { font-size: 22px; color: #1a1a1a; font-family: Georgia, serif; }
+
+  .country-list { padding: 4px 16px; }
+  .country-item { background: #f5e8c8; border: 1px solid #c8b880; border-radius: 8px; padding: 14px 16px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.12s; }
+  .country-item:hover { background: #e8d4a0; }
+  .country-name { font-size: 16px; font-family: Georgia, serif; color: #2a2a2a; }
+  .country-flag { font-size: 22px; }
+  .arrow { color: #7a6a4a; font-size: 18px; }
+
+  .bill-page { padding: 0 16px; }
+  .bill-card { background: #f5e8c8; border: 1px solid #c8b880; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .bill-img-placeholder { background: #c8b060; height: 160px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif; }
+  .bill-info { padding: 14px 16px; }
+  .bill-name { font-size: 16px; font-weight: bold; font-family: Georgia, serif; color: #1a1a1a; margin-bottom: 4px; }
+  .bill-year { font-size: 12px; color: #7a6a4a; margin-bottom: 8px; letter-spacing: 1px; }
+  .bill-desc { font-size: 14px; color: #5a4a30; line-height: 1.6; font-family: Georgia, serif; font-style: italic; }
+  .coming-soon { color: #9a8050; font-style: italic; }
+</style>
+
+<div id="app">
+  <div class="lang-bar">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" id="btn-es" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+
+  <div class="header" onclick="showHome()" role="button" aria-label="Go to home page">
+    <div class="logo-big">Loopy's</div>
+    <div class="logo-stars">★ TAVERN ★</div>
+    <div class="home-hint" data-en="tap to go home" data-es="toca para ir al inicio">tap to go home</div>
+  </div>
+
+  <div id="home-view">
+    <div class="section-title" data-en="World Banknote Collection" data-es="Colección de Billetes del Mundo">World Banknote Collection</div>
+    <div class="region-grid">
+      <button class="region-btn" onclick="showRegion('north-america')">
+        <span class="r-icon">🌎</span>
+        <span class="r-label" data-en="North America" data-es="Norteamérica">North America</span>
+        <span class="r-count">7 <span data-en="countries" data-es="países">countries</span></span>
+      </button>
+      <button class="region-btn" onclick="showRegion('south-america')">
+        <span class="r-icon">🌎</span>
+        <span class="r-label" data-en="South America" data-es="Sudamérica">South America</span>
+        <span class="r-count">5 <span data-en="countries" data-es="países">countries</span></span>
+      </button>
+      <button class="region-btn" onclick="showRegion('europe')">
+        <span class="r-icon">🌍</span>
+        <span class="r-label" data-en="Europe" data-es="Europa">Europe</span>
+        <span class="r-count">24 <span data-en="countries" data-es="países">countries</span></span>
+      </button>
+      <button class="region-btn" onclick="showRegion('asia')">
+        <span class="r-icon">🌏</span>
+        <span class="r-label" data-en="Asia &amp; Africa" data-es="Asia y África">Asia &amp; Africa</span>
+        <span class="r-count">6 <span data-en="countries" data-es="países">countries</span></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="region-view" style="display:none;">
+    <button class="back-btn" onclick="showHome()">
+      <span class="back-arrow">←</span> <span data-en="Back" data-es="Volver">Back</span>
+    </button>
+    <div class="region-header">
+      <h2 id="region-title"></h2>
+    </div>
+    <div class="country-list" id="country-list"></div>
+  </div>
+
+  <div id="country-view" style="display:none;">
+    <button class="back-btn" id="country-back-btn">
+      <span class="back-arrow">←</span> <span data-en="Back" data-es="Volver">Back</span>
+    </button>
+    <div class="region-header">
+      <h2 id="country-title"></h2>
+    </div>
+    <div class="bill-page" id="bill-list"></div>
+  </div>
+</div>
+
+<script>
+let lang = 'en';
+let currentRegion = null;
+
+const data = {
+  'north-america': {
+    label: { en: 'North America', es: 'Norteamérica' },
+    countries: [
+      { name: { en: 'Canada', es: 'Canadá' }, flag: '🇨🇦' },
+      { name: { en: 'Cayman Islands', es: 'Islas Caimán' }, flag: '🇰🇾' },
+      { name: { en: 'Costa Rica', es: 'Costa Rica' }, flag: '🇨🇷' },
+      { name: { en: 'Cuba', es: 'Cuba' }, flag: '🇨🇺' },
+      { name: { en: 'Dominican Republic', es: 'República Dominicana' }, flag: '🇩🇴' },
+      { name: { en: 'Mexico', es: 'México' }, flag: '🇲🇽' },
+      { name: { en: 'USA', es: 'EE.UU.' }, flag: '🇺🇸' },
+    ]
+  },
+  'south-america': {
+    label: { en: 'South America', es: 'Sudamérica' },
+    countries: [
+      { name: { en: 'Argentina', es: 'Argentina' }, flag: '🇦🇷' },
+      { name: { en: 'Brazil', es: 'Brasil' }, flag: '🇧🇷' },
+      { name: { en: 'Chile', es: 'Chile' }, flag: '🇨🇱' },
+      { name: { en: 'Uruguay', es: 'Uruguay' }, flag: '🇺🇾' },
+      { name: { en: 'Venezuela', es: 'Venezuela' }, flag: '🇻🇪' },
+    ]
+  },
+  'europe': {
+    label: { en: 'Europe', es: 'Europa' },
+    countries: [
+      { name: { en: 'Austria', es: 'Austria' }, flag: '🇦🇹' },
+      { name: { en: 'Belarus', es: 'Bielorrusia' }, flag: '🇧🇾' },
+      { name: { en: 'Bulgaria', es: 'Bulgaria' }, flag: '🇧🇬' },
+      { name: { en: 'Czech Republic', es: 'República Checa' }, flag: '🇨🇿' },
+      { name: { en: 'England', es: 'Inglaterra' }, flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+      { name: { en: 'Finland', es: 'Finlandia' }, flag: '🇫🇮' },
+      { name: { en: 'France', es: 'Francia' }, flag: '🇫🇷' },
+      { name: { en: 'Germany', es: 'Alemania' }, flag: '🇩🇪' },
+      { name: { en: 'Greece', es: 'Grecia' }, flag: '🇬🇷' },
+      { name: { en: 'Hungary', es: 'Hungría' }, flag: '🇭🇺' },
+      { name: { en: 'Iceland', es: 'Islandia' }, flag: '🇮🇸' },
+      { name: { en: 'Italy', es: 'Italia' }, flag: '🇮🇹' },
+      { name: { en: 'Netherlands', es: 'Países Bajos' }, flag: '🇳🇱' },
+      { name: { en: 'Norway', es: 'Noruega' }, flag: '🇳🇴' },
+      { name: { en: 'Poland', es: 'Polonia' }, flag: '🇵🇱' },
+      { name: { en: 'Portugal', es: 'Portugal' }, flag: '🇵🇹' },
+      { name: { en: 'Russia', es: 'Rusia' }, flag: '🇷🇺' },
+      { name: { en: 'Slovakia', es: 'Eslovaquia' }, flag: '🇸🇰' },
+      { name: { en: 'Spain', es: 'España' }, flag: '🇪🇸' },
+      { name: { en: 'Sweden', es: 'Suecia' }, flag: '🇸🇪' },
+      { name: { en: 'Turkey', es: 'Turquía' }, flag: '🇹🇷' },
+      { name: { en: 'Ukraine', es: 'Ucrania' }, flag: '🇺🇦' },
+      { name: { en: 'Yugoslavia', es: 'Yugoslavia' }, flag: '🇷🇸' },
+      { name: { en: 'Iran', es: 'Irán' }, flag: '🇮🇷' },
+    ]
+  },
+  'asia': {
+    label: { en: 'Asia & Africa', es: 'Asia y África' },
+    countries: [
+      { name: { en: 'Egypt', es: 'Egipto' }, flag: '🇪🇬' },
+      { name: { en: 'Gambia', es: 'Gambia' }, flag: '🇬🇲' },
+      { name: { en: 'Kenya', es: 'Kenia' }, flag: '🇰🇪' },
+      { name: { en: 'Morocco', es: 'Marruecos' }, flag: '🇲🇦' },
+      { name: { en: 'Qatar', es: 'Catar' }, flag: '🇶🇦' },
+      { name: { en: 'South Korea', es: 'Corea del Sur' }, flag: '🇰🇷' },
+    ]
+  }
+};
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-es').classList.toggle('active', l === 'es');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.getAttribute('data-' + l);
+  });
+  if (currentRegion && document.getElementById('region-view').style.display !== 'none') {
+    document.getElementById('region-title').textContent = data[currentRegion].label[lang];
+    renderCountryList(currentRegion);
+  }
+}
+
+function showHome() {
+  currentRegion = null;
+  document.getElementById('home-view').style.display = '';
+  document.getElementById('region-view').style.display = 'none';
+  document.getElementById('country-view').style.display = 'none';
+}
+
+function renderCountryList(regionKey) {
+  const region = data[regionKey];
+  const list = document.getElementById('country-list');
+  list.innerHTML = '';
+  region.countries.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'country-item';
+    div.innerHTML = '<span class="country-flag">' + c.flag + '</span><span class="country-name">' + c.name[lang] + '</span><span class="arrow">›</span>';
+    div.onclick = () => showCountry(c, regionKey);
+    list.appendChild(div);
+  });
+}
+
+function showRegion(regionKey) {
+  currentRegion = regionKey;
+  document.getElementById('region-title').textContent = data[regionKey].label[lang];
+  renderCountryList(regionKey);
+  document.getElementById('home-view').style.display = 'none';
+  document.getElementById('region-view').style.display = '';
+  document.getElementById('country-view').style.display = 'none';
+}
+
+function showCountry(country, regionKey) {
+  const name = country.name[lang];
+  document.getElementById('country-title').textContent = country.flag + ' ' + name;
+  document.getElementById('country-back-btn').onclick = () => showRegion(regionKey);
+  const comingSoon = lang === 'en' ? 'Description coming soon.' : 'Descripción próximamente.';
+  const photoSoon = lang === 'en' ? '📸 Photo coming soon' : '📸 Foto próximamente';
+  const billList = document.getElementById('bill-list');
+  billList.innerHTML = '<div class="bill-card"><div class="bill-img-placeholder">' + photoSoon + '</div><div class="bill-info"><div class="bill-name">' + name + '</div><div class="bill-year">—</div><div class="bill-desc coming-soon">' + comingSoon + '</div></div></div>';
+  document.getElementById('home-view').style.display = 'none';
+  document.getElementById('region-view').style.display = 'none';
+  document.getElementById('country-view').style.display = '';
+}
+</script>
